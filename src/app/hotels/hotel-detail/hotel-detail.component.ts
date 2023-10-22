@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {HotelListService} from "../hotel-list.service";
-import {IHotel} from "../hotel";
+import {ActivatedRoute, Router} from "@angular/router";
+import {HotelListService} from "../shared/service/hotel-list.service";
+import {IHotel} from "../shared/model/hotel";
 
 @Component({
   selector: 'app-hotel-detail',
@@ -12,7 +12,7 @@ export class HotelDetailComponent implements OnInit {
 
   public hotel: IHotel | undefined = <IHotel>{};
 
-  constructor(private route: ActivatedRoute, private hotelListService: HotelListService) { }
+  constructor(private route: ActivatedRoute, private hotelListService: HotelListService, private router: Router) { }
 
   ngOnInit(): void {
     // @ts-ignore
@@ -20,9 +20,11 @@ export class HotelDetailComponent implements OnInit {
     console.log(id);
 
     this.hotelListService.getHotels().subscribe((hotels: IHotel[]) => {
-      this.hotel = hotels.find(hotel => hotel.hotelId == id);
-      console.log(this.hotel);
+      this.hotel = hotels.find(hotel => hotel.id == id);
     })
   }
 
+  public backToList() {
+    this.router.navigate(['/hotels'])
+  }
 }
